@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="note_history_view_form" model="ir.ui.view">
+        <field name="name">note.history.view.form</field>
+        <field name="model">note.history.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cambiar de etapa">
+                <sheet>
+                    <group>
+                        <field name="note" nolabel="0" placeholder="Agregar una nota..." attrs="{'required': [('note_required','=',True)]}"/>
+                        <field name="note_required" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                        <button string="Confirmar" name="post_note" type="object" class="oe_highlight"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

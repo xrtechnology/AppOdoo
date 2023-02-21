@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_masspayment">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <!-- <div class="oe_structure" /> -->
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="col-9">Reporte de pagos masivos #<span t-field="o.name" /></h2>
+                            <div t-if="o.journal_id" class="col-3 row bm-2">
+                                <div class="col-6 text-center">
+                                    <strong>Estado:</strong>
+                                </div>
+                                <div class="col-6">
+                                    <p t-field="o.state" />
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="row mt-4 mb32">
+                            <div class="col-6">
+                                <div t-if="o.company_id" class="row bm-2">
+                                    <div class="col-6">
+                                        <strong>Empresa:</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <p t-field="o.company_id" class="m-0" />
+                                    </div>
+                                </div>
+                                <div t-if="o.approval_requested_by" class="row bm-2">
+                                    <div class="col-6">
+                                        <strong>Solicitó aprobación:</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <p t-field="o.approval_requested_by" class="m-0" />
+                                    </div>
+                                </div>
+                                <div t-if="o.request_date" class="row bm-2">
+                                    <div class="col-6">
+                                        <strong>Fecha de solicitud:</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <p t-field="o.request_date" class="m-0" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div t-if="o.journal_id" class="row bm-2">
+                                    <div class="col-6">
+                                        <strong>Fecha de solicitud:</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <p t-field="o.journal_id" class="m-0" />
+                                    </div>
+                                </div>
+                                <div t-if="o.payment_method_line_id" class="row bm-2">
+                                    <div class="col-6">
+                                        <strong>Método de pago:</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <p t-field="o.payment_method_line_id" class="m-0" />
+                                    </div>
+                                </div>
+                                <div t-if="o.l10n_mx_edi_payment_method_id" class="row bm-2">
+                                    <div class="col-6">
+                                        <strong>Forma de pago:</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <p t-field="o.l10n_mx_edi_payment_method_id" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <table class="table table-sm o_main_table mt-4">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <strong>Registro</strong>
+                                    </th>
+                                    <th>
+                                        <strong>Tipo de transacción</strong>
+                                    </th>
+                                    <th>
+                                        <strong>Pagar a</strong>
+                                    </th>
+                                    <th>
+                                        <strong>Divisa</strong>
+                                    </th>
+                                    <th class="text-end">
+                                        <strong>Importe adeudado</strong>
+                                    </th>
+                                    <th class="text-end">
+                                        <t t-if="o.state == 'accounted'">
+                                            <strong>Importe pagado</strong>
+                                        </t>
+                                        <t t-else="">
+                                            <strong>Importe a pagar</strong>
+                                        </t>
+                                    </th>
+                                    <th class="text-end">
+                                        <strong>Importe residual</strong>
+                                    </th>
+                                    <th>
+                                        <strong>Estado</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.transaction_line_ids" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <span t-field="line.record_reference" />
+                                        </td>
+                                        <td>
+                                            <span t-field="line.type" />
+                                        </td>
+                                        <td>
+                                            <span t-field="line.pay_to" />
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="line.currency_id" />
+                                        </td>
+                                        <td class="text-end">
+                                            <span t-field="line.amount_total"
+                                                t-options='{"widget": "monetary", "display_currency": line.currency_id}' />
+                                        </td>
+                                        <td class="text-end">
+                                            <span t-field="line.amount"
+                                                t-options='{"widget": "monetary", "display_currency": line.currency_id}' />
+                                        </td>
+                                        <td class="text-end">
+                                            <span t-field="line.amount_residual"
+                                                t-options='{"widget": "monetary", "display_currency": line.currency_id}' />
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="line.state_approval" />
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Totals -->
+                        <div class="row justify-content-end">
+                            <div class="col-7">
+                                <table class="table table-sm mt-4">
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-end">
+                                                <strong>Divisa</strong>
+                                            </th>
+                                            <th class="text-end">
+                                                <strong>Total importe adeudado</strong>
+                                            </th>
+                                            <th class="text-end">
+                                                <t t-if="o.state == 'accounted'">
+                                                    <strong>Total importe pagado</strong>
+                                                </t>
+                                                <t t-else="">
+                                                    <strong>Total importe a pagar</strong>
+                                                </t>
+                                            </th>
+                                            <th class="text-end">
+                                                <strong>Total importe residual</strong>
+                                            </th>
+                                        </tr>
+                                        <t t-foreach="o.get_totals()" t-as="line">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <span t-esc="line['currency_id'].name" />
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-esc="line['amount_total']"
+                                                        t-options='{"widget": "monetary", "display_currency": line["currency_id"]}' />
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-esc="line['total']"
+                                                        t-options='{"widget": "monetary", "display_currency": line["currency_id"]}' />
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-esc="line['total_residual']"
+                                                        t-options='{"widget": "monetary", "display_currency": line["currency_id"]}' />
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div t-if="o.state in ('approved', 'accounted')"
+                            style="page-break-before: always;"
+                            class="mt-5">
+                            <div>
+                                <h4>Aprobadores</h4>
+                                <hr />
+                            </div>
+                            <table class="table table-sm table-borderless">
+                                <tbody>
+                                    <tr class="text-center fw-bold">
+                                        <td>Aprobador 1</td>
+                                        <td>Aprobador 2</td>
+                                        <td>Aprobador 3</td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>
+                                            <span t-field="o.approved_first_by" />
+                                        </td>
+                                        <td>
+                                            <span t-field="o.approved_second_by" />
+                                        </td>
+                                        <td>
+                                            <span t-field="o.approved_third_by" />
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>
+                                            <img t-if="o.approver_one_sign" t-att-src="image_data_uri(o.approver_one_sign)"
+                                                style="max-height: 3cm; max-width: 6cm;"
+                                                class="border-bottom" />
+                                        </td>
+                                        <td>
+                                            <img t-if="o.approver_two_sign" t-att-src="image_data_uri(o.approver_two_sign)"
+                                                style="max-height: 3cm; max-width: 6cm;"
+                                                class="border-bottom" />
+                                        </td>
+                                        <td>
+                                            <img t-if="o.approver_three_sign" t-att-src="image_data_uri(o.approver_three_sign)"
+                                                style="max-height: 3cm; max-width: 6cm;"
+                                                class="border-bottom" />
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>
+                                            <span>Fecha: </span>
+                                            <p t-field="o.approved_date_first" />
+                                        </td>
+                                        <td>
+                                            <span>Fecha: </span>
+                                            <p t-field="o.approved_date_second" />
+                                        </td>
+                                        <td>
+                                            <span>Fecha: </span>
+                                            <p t-field="o.approved_date_third" />
+                                        </td>
+                                    </tr>
+
+                                    <tr class="text-center fw-bold">
+                                        <td><br />Aprobador 4</td>
+                                        <td t-if="o.state == 'accounted'">
+                                            <br />
+                                            <strong>Creador de pagos</strong>
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>
+                                            <span t-field="o.approved_fourth_by" />
+                                        </td>
+                                        <td t-if="o.state == 'accounted'">
+                                            <span t-field="o.paid_by" />
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <td>
+                                            <img t-if="o.approver_four_sign" t-att-src="image_data_uri(o.approver_four_sign)"
+                                                style="max-height: 3cm; max-width: 6cm;"
+                                                class="border-bottom" />
+                                        </td>
+                                        <td t-if="o.state == 'accounted'">
+                                            <img t-if="o.paying_user_sign" t-att-src="image_data_uri(o.paying_user_sign)"
+                                                style="max-height: 3cm; max-width: 6cm;"
+                                                class="border-bottom" />
+                                        </td>
+                                    </tr>
+                                    <tr class="text-center font-weight-bold">
+                                        <td>
+                                            <span>Fecha: </span>
+                                            <p t-field="o.approved_date_fourth" />
+                                        </td>
+                                        <td t-if="o.state == 'accounted'">
+                                            <span>Fecha: </span>
+                                            <p t-field="o.payment_date" />
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_users_form_inherit_res_users" model="ir.ui.view">
+        <field name="name">res.users.view.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="approval_in_companies" string="Aprobación en empresas" attrs="{'invisible': [('is_approver_one','=',False),('is_approver_two','=',False),('is_approver_three','=',False),('is_approver_four','=',False)]}">
+                    <p class="oe_grey oe_edit_only">
+                        <strong>Nota</strong>: Si no se especifica ninguna empresa, los permisos para aprobar informes de pagos
+                        aplicará para todas las empresas.
+                    </p>
+                    <group>
+                        <field name="is_approver_one" invisible="1"/>
+                        <field name="is_approver_two" invisible="1"/>
+                        <field name="is_approver_three" invisible="1"/>
+                        <field name="is_approver_four" invisible="1"/>
+                        <field name="approver_one_company_ids" widget="many2many_tags" attrs="{'invisible': [('is_approver_one','=',False)],}"/>
+                        <field name="approver_two_company_ids" widget="many2many_tags" attrs="{'invisible': [('is_approver_two','=',False)],}"/>
+                        <field name="approver_three_company_ids" widget="many2many_tags" attrs="{'invisible': [('is_approver_three','=',False)],}"/>
+                        <field name="approver_four_company_ids" widget="many2many_tags" attrs="{'invisible': [('is_approver_four','=',False)],}"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

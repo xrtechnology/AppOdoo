@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record model="ir.module.category" id="module_category_account_payment_report_parent">
+            <field name="name">Informe de pagos masivos</field>
+            <field name="description">Gestiona permisos para informes de pagos masivos</field>
+            <field name="sequence">8</field>
+            <!-- <field name="parent_id" ref="base.module_category_accounting"/> -->
+        </record>
+        
+        <record model="ir.module.category" id="module_category_account_payment_report">
+            <field name="name">Informe de pagos masivos</field>
+            <field name="description">Gestiona permisos para informes de pagos masivos</field>
+            <field name="parent_id" ref="module_category_account_payment_report_parent"/>
+        </record>
+
+        <!-- Grupo USUARIO -->
+        <record id="group_mass_payment_user" model="res.groups">
+            <field name="name">Usuario</field>
+            <field name="category_id" ref="module_category_account_payment_report" />
+        </record>
+
+        <!-- Grupo APROBADOR 1 -->
+        <record id="group_mass_payment_approver_1" model="res.groups">
+            <field name="name">Aprobador 1</field>
+            <field name="category_id" ref="module_category_account_payment_report" />
+        </record>
+
+        <!-- Grupo APROBADOR 2 -->
+        <record id="group_mass_payment_approver_2" model="res.groups">
+            <field name="name">Aprobador 2</field>
+            <field name="category_id" ref="module_category_account_payment_report" />
+        </record>
+
+        <!-- Grupo APROBADOR 3 -->
+        <record id="group_mass_payment_approver_3" model="res.groups">
+            <field name="name">Aprobador 3</field>
+            <field name="category_id" ref="module_category_account_payment_report" />
+        </record>
+
+        <!-- Grupo APROBADOR 4 -->
+        <record id="group_mass_payment_approver_4" model="res.groups">
+            <field name="name">Aprobador 4</field>
+            <field name="category_id" ref="module_category_account_payment_report" />
+        </record>
+
+        <!-- Grupo CREADOR DE PAGOS -->
+        <record id="group_mass_payment_generator" model="res.groups">
+            <field name="name">Creador de pagos</field>
+            <field name="category_id" ref="module_category_account_payment_report" />
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Regla de registro para mostrar registros de la misma empresa -->
+        <record id="account_payment_report_rule" model="ir.rule">
+            <field name="name">Reportes</field>
+            <field name="model_id" ref="model_account_payment_report"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+    </data>
+
+</odoo>
