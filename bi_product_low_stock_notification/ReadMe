@@ -1,0 +1,6 @@
+version 16.0.0.1==> Migrated this module v15 to v16.
+
+version 16.0.0.2 (21/12/2022)==> Improved domain for get only storable product.
+
+version 16.0.0.3 ==> Fixed when select french language after that scheduled run but mail data show in english.
+
