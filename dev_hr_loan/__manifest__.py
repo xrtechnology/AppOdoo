@@ -68,7 +68,7 @@ odoo app Loan functionality for employee | employee loan Integrated with Payroll
         'edi/mail_template.xml',
         'edi/skip_installment_mail_template.xml',
         'views/pay_slip_view.xml',
-        'views/salary_structure.xml',
+        #'views/salary_structure.xml',
         'wizard/import_loan_views.xml',
         'wizard/import_logs_view.xml',
         'views/dev_skip_installment.xml',
